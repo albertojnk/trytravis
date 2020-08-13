@@ -1,7 +1,8 @@
 import os
 import logging
+
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-logging.getLogger('tensorflow').disabled = True
+logging.getLogger("tensorflow").disabled = True
 import numpy as np
 from acessatjrs import AcessarSite
 from captcha import CaptchaSolver
@@ -16,69 +17,72 @@ solver = CaptchaSolver()
 site = AcessarSite()
 
 
-perinni = pandas.read_excel("1.xlsx", sheet_name="1", converters={
-                            'processos': lambda x: str(x)})
+perinni = pandas.read_excel(
+    "1.xlsx", sheet_name="1", converters={"processos": lambda x: str(x)}
+)
 lista = perinni.values.tolist()
 
-if os.path.exists ("checkpoint.txt"):
-    with open ("checkpoint.txt", "r") as check:
-        checkstart = int(check.read ())
+if os.path.exists("checkpoint.txt"):
+    with open("checkpoint.txt", "r") as check:
+        checkstart = int(check.read())
         lista = lista[checkstart:]
 
 total = 0
 errou = 0
 
-debug = True
+debug = False
 
-for codigoConsulta, i in tqdm(zip(lista, range (len(lista))),total= len (lista)):
+for codigoConsulta, i in tqdm(zip(lista, range(len(lista))), total=len(lista)):
     try:
-        for _ in range(10): # repetir varias vezes o acesso ao mesmo codigo caso a rede erre
+        for _ in range(
+            10
+        ):  # repetir varias vezes o acesso ao mesmo codigo caso a rede erre
 
             tempo = time.time()
             site.novo_acesso()
-            if(debug):
-                print('\nNOVO_ACESSO', time.time() - tempo)
+            if debug:
+                print("\nNOVO_ACESSO", time.time() - tempo)
 
             tempo = time.time()
             image = site.pegar_captcha()
-            if(debug):
-                print('PEGAR_CAPTCHA', time.time() - tempo)
+            if debug:
+                print("PEGAR_CAPTCHA", time.time() - tempo)
 
             tempo = time.time()
             image = solver.preprocess_image(image)
-            if(debug):
-                print('PREPROCESS', time.time() - tempo)
+            if debug:
+                print("PREPROCESS", time.time() - tempo)
 
             tempo = time.time()
             codigo = solver.predict(image)
-            if(debug):
-                print('PREDICT', time.time() - tempo)
+            if debug:
+                print("PREDICT", time.time() - tempo)
 
             tempo = time.time()
             result = site.make_request(codigoConsulta, codigo, debug)
-            if(debug):
-                print('MAKE_REQUEST', time.time() - tempo)
+            if debug:
+                print("MAKE_REQUEST", time.time() - tempo)
 
-            total +=1
-            
-            if("verificador" in result.url):
+            total += 1
+
+            if "verificador" in result.url:
                 errou += 1
             else:
                 break
 
         tempo = time.time()
         site.get_data(result, codigoConsulta)
-        if(debug):
-            print('GET_DATA', time.time() - tempo,'\n\n')
+        if debug:
+            print("GET_DATA", time.time() - tempo, "\n\n")
         site.save_data()
     except Exception as e:
-        print (e)
-        with open ("checkpoint.txt", "w") as check:
-            check.write (str(i))
+        print(e)
+        with open("checkpoint.txt", "w") as check:
+            check.write(str(i))
         sys.exit("batatinha")
 
-print('CaptchaSolver errou: {}'.format(errou), 'captchas')
-print('Total: {}'.format(total), 'captchas')
-print('Porcentagem de acertos: {}%'.format((1-errou/total)*100))
-if os.path.exists ("checkpoint.txt"): 
-    os.remove ("checkpoint.txt")
+print("CaptchaSolver errou: {}".format(errou), "captchas")
+print("Total: {}".format(total), "captchas")
+print("Porcentagem de acertos: {}%".format((1 - errou / total) * 100))
+if os.path.exists("checkpoint.txt"):
+    os.remove("checkpoint.txt")

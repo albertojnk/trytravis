@@ -1,0 +1,9 @@
+numpy
+tensorflow-gpu==1.15
+pandas
+lxml
+requests
+bs4
+pillow
+opencv-python
+scipy

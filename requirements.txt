@@ -7,3 +7,6 @@ bs4
 pillow
 opencv-python
 scipy
+tqdm
+xlrd
+openpyxl

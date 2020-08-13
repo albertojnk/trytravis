@@ -11,7 +11,7 @@ import pandas
 import numpy as np
 from PIL import Image
 import unicodedata
-
+from datetime import datetime
 from collections import defaultdict
 
 
@@ -29,7 +29,7 @@ class AcessarSite():
     def __init__(self):
         self.resultado = {"Consultado": [], "Extraido": [], "Comarca": [], "O_Julgador": [], "Procedimento": [],
              "Ativa": [], "E_Ativa": [], "Passiva": [], "E_Passiva": []}
-
+        self.time = datetime.now().strftime('%Y%m%d%H%M%S')
     def novo_acesso(self):
         self.sessao = requests.Session()
         self.url = "https://www.tjrs.jus.br/site_php/consulta/verifica_codigo_novo.php"
@@ -131,4 +131,5 @@ class AcessarSite():
 
     def save_data(self):
         df = pandas.DataFrame.from_dict(self.resultado)
-        df.to_csv("ListaFinal.csv",sep=";",encoding='utf-8-sig',index=False)
+        #df.to_csv("ListaFinal.csv",sep=";",encoding='utf-8-sig',index=False)
+        df.to_excel(f"{self.time}.xlsx",header=True, index=False)

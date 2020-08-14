@@ -200,9 +200,7 @@ dicionario_themis = defaultdict(lambda: "todas", dicionario_themis)
 class AcessarSite:
     def __init__(self):
         self.headers = UserAgent()
-        self.proxy = dict(
-            https="socks5://gYqYWk:pMbDhL@185.59.234.197:8000",
-        )
+        self.proxy = dict(https="socks5://gYqYWk:pMbDhL@185.59.234.197:8000",)
         self.resultado = {
             "Consultado": [],
             "Extraido": [],
@@ -222,9 +220,10 @@ class AcessarSite:
 
     def pegar_captcha(self):
         urlimg = "https://www.tjrs.jus.br/site_php/consulta/human_check/humancheck_showcode.php"
-        response = self.sessao.get(urlimg, 
-        #proxies=self.proxy, 
-        headers={'User-Agent':str(self.headers.random)},
+        response = self.sessao.get(
+            urlimg,
+            # proxies=self.proxy,
+            headers={"User-Agent": str(self.headers.random)},
         )
         if response.status_code == 200:
             with open("1.png", "wb") as f:
@@ -266,8 +265,8 @@ class AcessarSite:
                     "numCNJ": cnj,
                     "code": codigo,
                 },
-                #proxies=self.proxy,
-                headers={'User-Agent':str(self.headers.random)},
+                # proxies=self.proxy,
+                headers={"User-Agent": str(self.headers.random)},
             )
         else:
             result = self.sessao.get(
@@ -280,8 +279,8 @@ class AcessarSite:
                     "numCNJ": cnj,
                     "code": codigo,
                 },
-                #proxies=self.proxy,
-                headers={'User-Agent':str(self.headers.random)},
+                # proxies=self.proxy,
+                headers={"User-Agent": str(self.headers.random)},
             )
 
         if debug:

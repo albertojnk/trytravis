@@ -12,7 +12,7 @@ from PIL import Image
 import unicodedata
 from datetime import datetime
 from collections import defaultdict
-
+from fake_useragent import UserAgent
 
 dicionario_cnj = {
     "0001": "porto_alegre",
@@ -199,6 +199,10 @@ dicionario_themis = defaultdict(lambda: "todas", dicionario_themis)
 
 class AcessarSite:
     def __init__(self):
+        self.headers = UserAgent()
+        self.proxy = dict(
+            https="socks5://gYqYWk:pMbDhL@185.59.234.197:8000",
+        )
         self.resultado = {
             "Consultado": [],
             "Extraido": [],
@@ -218,7 +222,10 @@ class AcessarSite:
 
     def pegar_captcha(self):
         urlimg = "https://www.tjrs.jus.br/site_php/consulta/human_check/humancheck_showcode.php"
-        response = self.sessao.get(urlimg)
+        response = self.sessao.get(urlimg, 
+        #proxies=self.proxy, 
+        headers={'User-Agent':str(self.headers.random)},
+        )
         if response.status_code == 200:
             with open("1.png", "wb") as f:
                 f.write(response.content)
@@ -259,6 +266,8 @@ class AcessarSite:
                     "numCNJ": cnj,
                     "code": codigo,
                 },
+                #proxies=self.proxy,
+                headers={'User-Agent':str(self.headers.random)},
             )
         else:
             result = self.sessao.get(
@@ -271,6 +280,8 @@ class AcessarSite:
                     "numCNJ": cnj,
                     "code": codigo,
                 },
+                #proxies=self.proxy,
+                headers={'User-Agent':str(self.headers.random)},
             )
 
         if debug:
@@ -329,4 +340,4 @@ class AcessarSite:
     def save_data(self):
         df = pandas.DataFrame.from_dict(self.resultado)
         df.to_csv(f"{self.time}.csv", sep=";", encoding="utf-8-sig", index=False)
-        df.to_excel(f"{self.time}.xlsx", header=True, index=False)
+        # df.to_excel(f"{self.time}.xlsx", header=True, index=False)

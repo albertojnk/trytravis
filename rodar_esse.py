@@ -22,6 +22,7 @@ perinni = pandas.read_excel(
 )
 lista = perinni.values.tolist()
 
+checkstart = 0
 if os.path.exists("checkpoint.txt"):
     with open("checkpoint.txt", "r") as check:
         checkstart = int(check.read())
@@ -78,11 +79,16 @@ for codigoConsulta, i in tqdm(zip(lista, range(len(lista))), total=len(lista)):
     except Exception as e:
         print(e)
         with open("checkpoint.txt", "w") as check:
-            check.write(str(i))
+            check.write(str(i+checkstart))
+        #os.system("python rodar_esse.py")
         sys.exit("batatinha")
+    except KeyboardInterrupt:
+        with open("checkpoint.txt", "w") as check:
+            check.write(str(i+checkstart))
+        sys.exit("perinni")
 
 print("CaptchaSolver errou: {}".format(errou), "captchas")
 print("Total: {}".format(total), "captchas")
 print("Porcentagem de acertos: {}%".format((1 - errou / total) * 100))
 if os.path.exists("checkpoint.txt"):
-    os.remove("checkpoint.txt")
+   os.remove("checkpoint.txt")

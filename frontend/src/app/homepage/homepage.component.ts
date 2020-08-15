@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ApiService } from '../api.service';
+import { Component, OnInit } from '@angular/core';
 import { Procedure } from '../procedure'
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -16,11 +15,11 @@ export class HomepageComponent implements OnInit {
   constructor() {}
 
   files: File[] = [];
-  public showProgressBar = false;
   public progressWidth = 0;
   public dataSource = new MatTableDataSource<Procedure>();;
   public currentData: Procedure[] = [];
   public displayedColumns: string[] = [
+    'created',
     'consultado',
     'extraido',
     'comarca',
@@ -30,7 +29,6 @@ export class HomepageComponent implements OnInit {
     'e_ativa',
     'passiva',
     'e_passiva',
-    'created',
   ];
 
   ngOnInit(): void {
@@ -45,7 +43,7 @@ export class HomepageComponent implements OnInit {
       delete response.progress
 
       if(this.progressWidth >= 100) {
-        this.resetPrograssBar()
+        this.progressWidth = 0
       }
 
       this.currentData.push(response)
@@ -59,7 +57,6 @@ export class HomepageComponent implements OnInit {
     
     // Called when connection is closed (for whatever reason).
     ws.onclose = () => {
-      this.showProgressBar = false
       console.log('complete') 
     }
   }
@@ -77,8 +74,6 @@ export class HomepageComponent implements OnInit {
   }
 
   send() {
-    this.showProgressBar = true;
-    
     const reader = new FileReader();
     new ArrayBuffer(this.files[0].size);
     
@@ -92,10 +87,5 @@ export class HomepageComponent implements OnInit {
 
   onRemove(event) {
       this.files.splice(this.files.indexOf(event), 1);
-  }
-
-  resetPrograssBar() {
-    this.showProgressBar = false
-    this.progressWidth = 0
   }
 }

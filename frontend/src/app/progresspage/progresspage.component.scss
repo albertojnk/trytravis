@@ -1,0 +1,27 @@
+.search-input {
+    margin: auto;
+    bottom: 13%;
+    position: absolute;
+    left: 43%;
+    display: flex;
+}
+
+::ng-deep .mat-form-field-outline {
+    background: #f5f4f9;
+    border-radius: 5px;
+}
+
+.mat-form-field {
+    max-height: 70px;
+}
+
+.send-button {
+    margin: auto 20px;
+}
+
+.progress-preview {
+    width: 80%;
+    margin: 30px auto;
+    max-height: 60vh;
+    overflow: overlay;
+}

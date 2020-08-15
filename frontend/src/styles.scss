@@ -2,3 +2,11 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-y: hidden;}
+
+.background {
+    background-image: url('./assets/images/background.jpg');
+    height: calc(100% - 64px);
+    display: flex;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}

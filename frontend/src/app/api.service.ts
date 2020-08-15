@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEventType, HttpRequest, HttpProgressEvent, HttpResponse  } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
+import { ProcedureProgress } from './procedure'
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class ApiService {
         }
       })
     })
+  }
+
+  public getCurrentProgress(createdId: string): Observable<ProcedureProgress> {
+    return this.http.get<ProcedureProgress>(environment.API_SERVER + '/procedures/' + createdId)
   }
 }

@@ -1,7 +1,7 @@
 <app-header-toolbar></app-header-toolbar>
 <app-progress-bar [progressWidth]="progressWidth"></app-progress-bar>
 <div class="background">
-    <div class="progress-preview">
+    <div *ngIf="showTable" class="progress-preview">
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="consultado">
               <mat-header-cell *matHeaderCellDef> Consultado </mat-header-cell>
@@ -57,17 +57,13 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
     </div>
-    <div class="container">
-        <div class="drag-drop">
-            <ngx-dropzone class="drop-zone" (change)="onSelect($event)">
-              <ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
-              <ngx-dropzone-preview  class="drag-drop-preview" *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-              </ngx-dropzone-preview>
-            </ngx-dropzone>
-        </div>
+    <div class="search-input">
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Created ID</mat-label>
+            <input matInput placeholder="20200815182214" [(ngModel)]="createdId">
+        </mat-form-field>
         <div class="send-button">
-            <button mat-raised-button [disabled]="progressWidth === 0 ? false : true" (click)="send()" color="accent">Send</button>
+            <button mat-raised-button (click)="send()" color="accent">Send</button>
         </div>
     </div>
 </div>

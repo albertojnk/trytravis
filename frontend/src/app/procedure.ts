@@ -12,3 +12,7 @@ export interface Procedure {
     created: string;
     progress: number;
 }
+
+export interface ProcedureProgress {
+    procedures: Procedure[]
+}

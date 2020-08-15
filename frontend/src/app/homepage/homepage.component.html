@@ -8,6 +8,62 @@
     <mat-progress-bar mode="determinate" [value]="progressWidth" color="warn"></mat-progress-bar>
 </div>
 <div class="background">
+    <div class="progress-preview">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="consultado">
+              <mat-header-cell *matHeaderCellDef> Consultado </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.consultado}} </mat-cell>
+            </ng-container>
+          
+            <ng-container matColumnDef="extraido">
+              <mat-header-cell *matHeaderCellDef> Extraido </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.extraido}} </mat-cell>
+            </ng-container>
+          
+            <ng-container matColumnDef="comarca">
+              <mat-header-cell *matHeaderCellDef> Comarca </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.comarca}} </mat-cell>
+            </ng-container>
+          
+            <ng-container matColumnDef="o_julgador">
+              <mat-header-cell *matHeaderCellDef> Julgador </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.o_julgador}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="procedimento">
+                <mat-header-cell *matHeaderCellDef> Procedimento </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.procedimento}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="ativa">
+                <mat-header-cell *matHeaderCellDef> Ativa </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.ativa}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="passiva">
+                <mat-header-cell *matHeaderCellDef> Passiva </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.passiva}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="e_ativa">
+                <mat-header-cell *matHeaderCellDef> E_ativa </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.e_ativa}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="e_passiva">
+                <mat-header-cell *matHeaderCellDef> E_passiva </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.e_passiva}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="created">
+                <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.created}} </mat-cell>
+            </ng-container>
+          
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+    </div>
     <div class="container">
         <div class="drag-drop">
             <ngx-dropzone class="drop-zone" (change)="onSelect($event)">

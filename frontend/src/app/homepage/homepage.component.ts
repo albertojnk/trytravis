@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ApiService } from '../api.service'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ApiService } from '../api.service';
+import { Procedure } from '../procedure'
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-homepage',
@@ -9,35 +10,64 @@ import { ApiService } from '../api.service'
 })
 export class HomepageComponent implements OnInit {
   constructor(
-    private http: HttpClient,
     private apiService: ApiService
     ) {}
-
-  public showProgressBar = false;
-  public progressWidth = 0;
-
-  ngOnInit(): void {}
-
+    
   files: File[] = [];
   formData = new FormData();
+  public showProgressBar = false;
+  public progressWidth = 0;
+  public dataSource = new MatTableDataSource<Procedure>();;
+  public displayedColumns: string[] = [
+    'consultado',
+    'extraido',
+    'comarca',
+    'o_julgador',
+    'procedimento',
+    'ativa',
+    'passiva',
+    'e_ativa',
+    'e_passiva',
+    'created',
+  ];
+
+  ngOnInit(): void {
+    this.refreshTable()
+    console.log(this.dataSource.data);
+  }
+
 
   onSelect(event) {
       this.files = event.addedFiles;
   }
 
-  send() {
-    console.log(this.files);
-    this.formData.append("myFile", this.files[0]);
-    this.showProgressBar = true;
+  refreshTable() {
+    this.dataSource.data = [
+      { 
+        consultado: '1',
+        extraido: '2',
+        comarca: '3',
+        o_julgador: '4',
+        procedimento: '5',
+        ativa: '6',
+        passiva: '7',
+        e_ativa: '8',
+        e_passiva: '9',
+        created: '10'
+      }
+    ];
+  }
 
-    this.apiService.putData(this.formData, this.files[0].size).subscribe(progress => {
-      this.progressWidth = Math.round(progress / this.files[0].size * 100);
-      console.log(this.progressWidth);
-    }).add(() => {
-      this.showProgressBar = false;
-      this.progressWidth = 0;
-    })
-    
+  send() {
+    // this.formData.append("file", this.files[0]);
+    // this.showProgressBar = true;
+
+    // this.apiService.uploadFile(this.formData).subscribe(progress => {
+    //   this.progressWidth = Math.round(progress / this.files[0].size * 100);
+    // }).add(() => {
+    //   this.showProgressBar = false;
+    //   this.progressWidth = 0;
+    // })
   }
 
   onRemove(event) {

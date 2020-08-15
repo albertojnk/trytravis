@@ -12,7 +12,7 @@ export class ApiService {
     private readonly http: HttpClient
   ) { }
 
-  public putData(form: FormData, fileSize: number): Observable<any> {
+  public uploadFile(form: FormData): Observable<any> {
     return new Observable((success) => {
       const req = new HttpRequest('POST', environment.API_SERVER + '/files', form, {
         reportProgress: true,

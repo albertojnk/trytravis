@@ -130,3 +130,5 @@ dmypy.json
 
 *.png 
 .vscode
+
+node_modules

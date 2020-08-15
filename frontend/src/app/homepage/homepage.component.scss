@@ -1,0 +1,47 @@
+.header {
+    height: auto;
+}
+
+.drag-drop {
+    width: 200px;
+    margin: 0px 40px;
+    height: 120px;
+}
+
+.drop-zone {
+    max-width: 200px;
+    max-height: 115px;
+    background: transparent;
+}
+
+.drag-drop-preview {
+    margin: auto !important;
+    height: 75px !important;
+    width: auto !important;
+    padding: 5px !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+}
+
+.container {
+    margin-top: 35px;
+    display: flex;
+    width: auto;
+    height: 120px;
+    position: absolute;
+    bottom: 80px;
+    left: 40%;
+}
+
+.background {
+    background-image: url('../../assets/images/background.jpg');
+    height: calc(100% - 64px);
+    display: flex;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.send-button {
+    margin: auto 0;
+}

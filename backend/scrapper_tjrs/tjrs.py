@@ -2,39 +2,29 @@ import io
 import logging
 import os
 import re
+import unicodedata
 import urllib
+from datetime import datetime
+from urllib.request import urlopen
 
 import cv2
 import numpy as np
 import pandas
 import requests
-import unicodedata
-
 from bs4 import BeautifulSoup
-from datetime import datetime
 from fake_useragent import UserAgent
-from lxml import html, etree
+from lxml import etree, html
 from PIL import Image
 from requests import session
-from urllib.request import urlopen
 
 from .comarcas import dict_cnj, dict_themis
+from .model import Process, SessionLocal
+
 
 class TJRS:
     def __init__(self):
         self.headers = UserAgent()
         self.proxy = dict(https="socks5://gYqYWk:pMbDhL@185.59.234.197:8000",)
-        self.result = {
-            "Consultado": [],
-            "Extraido": [],
-            "Comarca": [],
-            "O_Julgador": [],
-            "Procedimento": [],
-            "Ativa": [],
-            "E_Ativa": [],
-            "Passiva": [],
-            "E_Passiva": [],
-        }
         self.time = datetime.now().strftime("%Y%m%d%H%M%S")
         self.url = "https://www.tjrs.jus.br/site_php/consulta/verifica_codigo_novo.php"
         self.session = None
@@ -138,34 +128,17 @@ class TJRS:
             if not check_colon_number(e_passiva[0]):
                 break
 
-        result = {
-            "Consultado": [],
-            "Extraido": [],
-            "Comarca": [],
-            "O_Julgador": [],
-            "Procedimento": [],
-            "Ativa": [],
-            "E_Ativa": [],
-            "Passiva": [],
-            "E_Passiva": [],
-        }
+        p = Process()
 
-        result["Procedimento"].append(
-            procedimento[0].strip() if len(procedimento) > 0 else None
-        )
-        result["Consultado"].append(process_num.strip())
-        result["Extraido"].append(
-            extraido[0].strip() if len(extraido) > 0 else process_num
-        )
-        result["Comarca"].append(comarca[0].strip() if len(comarca) > 0 else None)
-        result["O_Julgador"].append(
-            o_julgador[0].strip() if len(o_julgador) > 0 else None
-        )
-        result["Ativa"].append(ativa[0].strip() if len(ativa) > 0 else None)
-        result["E_Ativa"].append(e_ativa[0].strip() if len(e_ativa) > 0 else None)
-        result["Passiva"].append(passiva[0].strip() if len(passiva) > 0 else None)
-        result["E_Passiva"].append(e_passiva[0].strip() if len(e_passiva) > 0 else None)
+        p.procedimento =  procedimento[0].strip() if len(procedimento) > 0 else None
+        p.consultado = process_num.strip()
+        p.extraido = extraido[0].strip() if len(extraido) > 0 else process_num
+        p.comarca = comarca[0].strip() if len(comarca) > 0 else None
+        p.o_julgador = o_julgador[0].strip() if len(o_julgador) > 0 else None
+        p.ativa = ativa[0].strip() if len(ativa) > 0 else None
+        p.e_ativa = e_ativa[0].strip() if len(e_ativa) > 0 else None
+        p.passiva = passiva[0].strip() if len(passiva) > 0 else None
+        p.e_passiva = e_passiva[0].strip() if len(e_passiva) > 0 else None
+        p.created = self.time
 
-        df = pandas.DataFrame.from_dict(result)
-        df.to_csv(f"{self.time}.csv", sep=";", encoding="utf-8-sig", mode='a',
-                   index=False, header=(not os.path.exists(f"{self.time}.csv")))
+        return p

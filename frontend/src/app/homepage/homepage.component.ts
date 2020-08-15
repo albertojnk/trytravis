@@ -3,6 +3,9 @@ import { ApiService } from '../api.service';
 import { Procedure } from '../procedure'
 import { MatTableDataSource } from '@angular/material/table';
 
+
+const URL = "ws://localhost:8000/ws"
+const ws = new WebSocket(URL)
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -12,12 +15,12 @@ export class HomepageComponent implements OnInit {
   constructor(
     private apiService: ApiService
     ) {}
-    
   files: File[] = [];
   formData = new FormData();
   public showProgressBar = false;
   public progressWidth = 0;
   public dataSource = new MatTableDataSource<Procedure>();;
+  public currentData: Procedure[] = [];
   public displayedColumns: string[] = [
     'consultado',
     'extraido',
@@ -33,7 +36,19 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshTable()
-    console.log(this.dataSource.data);
+    
+    // Called whenever there is a message from the server.
+    ws.onmessage = (msg) => {
+      this.currentData.push(JSON.parse(msg.data))
+      this.refreshTable()
+      console.log(this.dataSource.data);
+    }
+    
+    ws.onerror = (err) => {
+      console.log(err) // Called if at any point WebSocket API signals some kind of error.
+    }
+    
+    ws.onclose = () => console.log('complete') // Called when connection is closed (for whatever reason).
   }
 
 
@@ -42,32 +57,25 @@ export class HomepageComponent implements OnInit {
   }
 
   refreshTable() {
-    this.dataSource.data = [
-      { 
-        consultado: '1',
-        extraido: '2',
-        comarca: '3',
-        o_julgador: '4',
-        procedimento: '5',
-        ativa: '6',
-        passiva: '7',
-        e_ativa: '8',
-        e_passiva: '9',
-        created: '10'
-      }
-    ];
+    this.dataSource.data = this.currentData
   }
 
   send() {
     // this.formData.append("file", this.files[0]);
-    // this.showProgressBar = true;
-
-    // this.apiService.uploadFile(this.formData).subscribe(progress => {
-    //   this.progressWidth = Math.round(progress / this.files[0].size * 100);
-    // }).add(() => {
-    //   this.showProgressBar = false;
-    //   this.progressWidth = 0;
-    // })
+    this.showProgressBar = true;
+    
+    const reader = new FileReader();
+    const rawData = new ArrayBuffer(this.files[0].size);
+    
+    reader.onload = function(e) {
+      const rawData = <ArrayBuffer>e.target.result;
+      const byteArray = new Uint8Array(rawData);
+      console.log(byteArray.buffer);
+      
+      ws.send(byteArray.buffer);
+    };
+    reader.readAsArrayBuffer(this.files[0]);
+    
   }
 
   onRemove(event) {

@@ -7,65 +7,30 @@ import pandas as pd
 import sqlalchemy as sa
 from fastapi import (Depends, FastAPI, File, HTTPException, UploadFile,
                      WebSocket, WebSocketDisconnect)
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from tqdm import tqdm
 
 from .captcha import CaptchaSolver
-from .model import Base, PydanticProcess, SessionLocal
+from .model import Base, PydanticProcess, SessionLocal, Process
 from .tjrs import TJRS
 
 app = FastAPI()
 
-html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>WebSocket Chat</h1>
-        <h2>Your ID: <span id="ws-id"></span></h2>
+origins = [
+    "http://localhost:4200",
+]
 
-        <input id="file" type="file">
-        <input type="button" value="Upload" onclick="sendFile()" />
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-        <ul id='messages'>
-        </ul>
-        <script>
-            var client_id = Date.now()
-            document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8000/ws/`);
-
-            ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-            };
-            function sendFile() {
-
-                var file = document.getElementById('file').files[0];
-
-                var reader = new FileReader();
-
-                var rawData = new ArrayBuffer();
-
-                reader.onload = function(e) {
-
-                    var rawData = e.target.result;
-                    var byteArray = new Uint8Array(rawData);
-                    var fileByteArray = [];
-                    ws.send(byteArray.buffer);
-                };
-                reader.readAsArrayBuffer(file);
-
-            }
-        </script>
-    </body>
-</html>
-"""
 
 def get_db():
     db = SessionLocal()
@@ -164,20 +129,8 @@ async def do_magic(file: UploadFile = File(...), db: Session = Depends(get_db)):
 
     return {"message": tjrs.time}
 
-@app.get("/")
-async def main():
-    content = """
-<body>
-<form action="/do_magic/" enctype="multipart/form-data" method="post">
-<input name="file" type="file">
-<input type="submit">
-</form>
-</body>
-    """
-    return HTMLResponse(content=content)
+@app.get("/procedures/{created_id}")
+async def do_something(created_id: str, db: Session = Depends(get_db)):
+    result = db.query(Process).filter(Process.created == created_id).all()
 
-@app.get("/test")
-async def ws_test():
-    return HTMLResponse(content=html)
-
-
+    return dict(procedures = [PydanticProcess.from_orm(p).dict() for p in result ])

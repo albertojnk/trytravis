@@ -30,21 +30,6 @@ import numpy
 from PIL import ImageFilter
 
 
-def mudar_image(image):
-    th1 = 165
-    th2 = 165  # threshold after blurring
-    sig = 1  # the blurring sigma
-    black_and_white = image.convert("L")  # converting to black and white
-    first_threshold = black_and_white.point(lambda p: p > th1 and 255)
-    blur = np.array(first_threshold)  # create an image array
-    blurred = gaussian_filter(blur, sigma=sig)
-    blurred = Image.fromarray(blurred)
-    final = blurred.point(lambda p: p > th2 and 255)
-    final = final.filter(ImageFilter.EDGE_ENHANCE_MORE)
-    final = final.filter(ImageFilter.SHARPEN)
-    return final
-
-
 class CaptchaSolver:
     def __init__(self, weights="model.h5"):
         self.model = self.CNN()
@@ -60,14 +45,25 @@ class CaptchaSolver:
         )
 
     def preprocess_image(self, image):
-        image = np.array(mudar_image(image))
+        th1 = 165
+        th2 = 165  # threshold after blurring
+        sig = 1  # the blurring sigma
+        black_and_white = image.convert("L")  # converting to black and white
+        first_threshold = black_and_white.point(lambda p: p > th1 and 255)
+        blur = np.array(first_threshold)  # create an image array
+        blurred = gaussian_filter(blur, sigma=sig)
+        blurred = Image.fromarray(blurred)
+        final = blurred.point(lambda p: p > th2 and 255)
+        final = final.filter(ImageFilter.EDGE_ENHANCE_MORE)
+        final = final.filter(ImageFilter.SHARPEN)
+        image = np.array(final)
         image = image[..., None]
         return image
 
     def predict(self, image):
-        chutar_valor = self.model.predict(image[None, :])
-        codigo = f"{np.argmax(chutar_valor[0])}{np.argmax(chutar_valor[1])}{np.argmax(chutar_valor[2])}{np.argmax(chutar_valor[3])}"
-        return codigo
+        guess = self.model.predict(image[None, :])
+        result = f"{np.argmax(guess[0])}{np.argmax(guess[1])}{np.argmax(guess[2])}{np.argmax(guess[3])}"
+        return result
 
     def CNN(self, input_shape=(40, 120, 1)):
         inputs = Input(shape=input_shape)
@@ -105,11 +101,11 @@ class CaptchaSolver:
 
         fully = Dense(256, activation="relu")(conv5)
 
-        saida1 = Dense(10, activation="softmax")(fully)
-        saida2 = Dense(10, activation="softmax")(fully)
-        saida3 = Dense(10, activation="softmax")(fully)
-        saida4 = Dense(10, activation="softmax")(fully)
+        output1 = Dense(10, activation="softmax")(fully)
+        output2 = Dense(10, activation="softmax")(fully)
+        output3 = Dense(10, activation="softmax")(fully)
+        output4 = Dense(10, activation="softmax")(fully)
 
-        model = Model(inputs=[inputs], outputs=[saida1, saida2, saida3, saida4])
+        model = Model(inputs=[inputs], outputs=[output1, output2, output3, output4])
 
         return model

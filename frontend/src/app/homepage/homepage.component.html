@@ -39,15 +39,15 @@
                 <mat-header-cell *matHeaderCellDef> Ativa </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.ativa}} </mat-cell>
             </ng-container>
-        
-            <ng-container matColumnDef="passiva">
-                <mat-header-cell *matHeaderCellDef> Passiva </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.passiva}} </mat-cell>
-            </ng-container>
-        
+            
             <ng-container matColumnDef="e_ativa">
                 <mat-header-cell *matHeaderCellDef> E_ativa </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.e_ativa}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="passiva">
+                <mat-header-cell *matHeaderCellDef> Passiva </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.passiva}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="e_passiva">
@@ -74,7 +74,7 @@
             </ngx-dropzone>
         </div>
         <div class="send-button">
-            <button mat-raised-button (click)="send()" color="accent">Send</button>
+            <button mat-raised-button [disabled]="showProgressBar" (click)="send()" color="accent">Send</button>
         </div>
     </div>
 </div>

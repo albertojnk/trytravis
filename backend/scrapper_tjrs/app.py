@@ -112,8 +112,9 @@ async def websocket_ep(websocket: WebSocket, db: Session = Depends(get_db)):
                 p = tjrs.get_data(result, process_num[0])
                 db.add(p)
                 db.commit()
-
-                await websocket.send_json(PydanticProcess.from_orm(p).dict())
+                response = PydanticProcess.from_orm(p).dict()
+                response['progress'] = ((i + 1) /  len(process_list)) * 100
+                await websocket.send_json(response)
                 await asyncio.sleep(0)
 
             except Exception as e:

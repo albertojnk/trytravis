@@ -10,4 +10,5 @@ export interface Procedure {
     e_ativa: string;
     e_passiva: string;
     created: string;
+    progress: number;
 }

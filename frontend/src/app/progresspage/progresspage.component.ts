@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service'
-import { ProcedureProgress, Procedure } from '../procedure'
+import { Procedure } from '../procedure'
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({

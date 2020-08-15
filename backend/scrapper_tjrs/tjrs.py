@@ -83,7 +83,7 @@ class TJRS:
     def make_request(self, process_num, captcha):
         num_cnj, process_num_type = self.get_process_num_type(process_num)
 
-        comarca = self.get_comarca(process_num, process_num_type)
+        comarca = self.get_comarca(process_num, num_cnj)
 
         params = {
                     "tipo": 1,

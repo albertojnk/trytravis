@@ -11,3 +11,9 @@ tqdm
 xlrd
 openpyxl
 fake_useragent
+fastapi
+sqlalchemy
+uvicorn
+watchdog
+pydantic
+pydantic_sqlalchemy

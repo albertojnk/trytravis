@@ -1,33 +1,19 @@
+import cv2
+import numpy
 import numpy as np
 import tensorflow
 import tensorflow.keras as keras
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import (
-    Input,
-    concatenate,
-    Conv2D,
-    MaxPooling2D,
-    Conv2DTranspose,
-    Dropout,
-    Lambda,
-    Dense,
-    Flatten,
-)
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import (
-    EarlyStopping,
-    ModelCheckpoint,
-    ReduceLROnPlateau,
-    TensorBoard,
-)
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras import backend as K
-import cv2
-from PIL import Image
-from PIL import Image
+from PIL import Image, ImageFilter
 from scipy.ndimage.filters import gaussian_filter
-import numpy
-from PIL import ImageFilter
+from tensorflow.keras import backend as K
+from tensorflow.keras.callbacks import (EarlyStopping, ModelCheckpoint,
+                                        ReduceLROnPlateau, TensorBoard)
+from tensorflow.keras.layers import (Conv2D, Conv2DTranspose, Dense, Dropout,
+                                     Flatten, Input, Lambda, MaxPooling2D,
+                                     concatenate)
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import to_categorical
 
 
 class CaptchaSolver:

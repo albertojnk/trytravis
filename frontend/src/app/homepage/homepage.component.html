@@ -1,0 +1,24 @@
+<div class="header">
+    <mat-toolbar color="accent">
+        <span>Scrapper TJRS</span>
+        <span class="example-spacer"></span>
+    </mat-toolbar>
+</div>
+<div *ngIf="showProgressBar" class="progress-bar">
+    <mat-progress-bar mode="determinate" [value]="progressWidth" color="warn"></mat-progress-bar>
+</div>
+<div class="background">
+    <div class="container">
+        <div class="drag-drop">
+            <ngx-dropzone class="drop-zone" (change)="onSelect($event)">
+              <ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
+              <ngx-dropzone-preview  class="drag-drop-preview" *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+        </div>
+        <div class="send-button">
+            <button mat-raised-button (click)="send()" color="accent">Send</button>
+        </div>
+    </div>
+</div>

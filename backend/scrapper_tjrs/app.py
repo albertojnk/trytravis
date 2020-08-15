@@ -35,7 +35,7 @@ html = """
         <script>
             var client_id = Date.now()
             document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+            var ws = new WebSocket(`ws://localhost:8000/ws/`);
 
             ws.onmessage = function(event) {
                 var messages = document.getElementById('messages')
@@ -74,17 +74,14 @@ def get_db():
     finally:
         db.close()
 
-@app.websocket('/ws/{client_id}')
-async def websocket_ep(websocket: WebSocket, client_id: int, db: Session = Depends(get_db)):
+@app.websocket('/ws')
+async def websocket_ep(websocket: WebSocket, db: Session = Depends(get_db)):
     await websocket.accept()
 
     while True:
         data = await websocket.receive_bytes()
         df = pd.read_excel(data, sheet_name="1", converters={"processos": lambda x: str(x)})
         process_list = df.values.tolist()
-
-        await websocket.send_text("hello from server")
-        await asyncio.sleep(0)
 
         total = 0
         miss = 0

@@ -1,4 +1,5 @@
 export interface Procedure {
+    id: string;
     consultado: string;
     extraido: string;
     comarca: string;

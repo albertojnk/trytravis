@@ -17,3 +17,4 @@ uvicorn
 watchdog
 pydantic
 pydantic_sqlalchemy
+python-multipart

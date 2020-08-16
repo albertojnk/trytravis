@@ -5,13 +5,9 @@ import re
 import unicodedata
 import urllib
 from datetime import datetime
-from urllib.request import urlopen
 
-import cv2
 import numpy as np
-import pandas
 import requests
-from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from lxml import etree, html
 from PIL import Image

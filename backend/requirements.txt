@@ -1,12 +1,9 @@
 numpy
-tensorflow-gpu==1.15
+tensorflow==1.15
 pandas
 lxml
 requests
-bs4
 pillow
-opencv-python
-scipy
 tqdm
 xlrd
 openpyxl
@@ -18,3 +15,4 @@ watchdog
 pydantic
 pydantic_sqlalchemy
 python-multipart
+scipy

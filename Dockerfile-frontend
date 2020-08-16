@@ -1,0 +1,15 @@
+FROM node:14.8.0
+
+WORKDIR /app
+
+RUN npm i -g @angular/cli
+
+COPY /frontend/package.json package.json
+
+RUN npm install --silent
+
+COPY /frontend .
+
+EXPOSE 4200
+
+CMD npm start

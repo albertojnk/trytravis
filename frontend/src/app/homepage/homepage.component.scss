@@ -1,6 +1,6 @@
 .drag-drop {
     width: 200px;
-    margin: 0px 40px;
+    margin: 0px 20px;
     height: 120px;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .container {
-    margin-top: 35px;
+    margin: auto;
     display: flex;
     width: auto;
     height: 120px;
@@ -31,7 +31,11 @@
 }
 
 .send-button {
-    margin: auto 0;
+    margin: auto 20px auto 0;
+}
+
+.download-button {
+    margin: auto 0px;
 }
 
 .progress-preview {

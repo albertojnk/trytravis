@@ -69,5 +69,8 @@
         <div class="send-button">
             <button mat-raised-button [disabled]="progressWidth === 0 ? false : true" (click)="send()" color="accent">Send</button>
         </div>
+        <div class="download-button">
+          <button mat-raised-button [disabled]="!isDownloadReady" (click)="download()" color="accent">Download</button>
+      </div>
     </div>
 </div>

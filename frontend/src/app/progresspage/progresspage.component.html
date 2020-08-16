@@ -65,5 +65,11 @@
         <div class="send-button">
             <button mat-raised-button (click)="send()" color="accent">Send</button>
         </div>
+        <div class="download-button">
+            <button mat-raised-button [disabled]="!isDownloadReady" (click)="download()" color="accent">Download</button>
+        </div>
+        <div class="clear-button">
+            <button mat-raised-button (click)="clear()" color="accent">Clear</button>
+        </div>
     </div>
 </div>

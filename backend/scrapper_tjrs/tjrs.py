@@ -111,7 +111,7 @@ class TJRS:
                 if any((c in chars) for c in value):
                     return True
                 else:
-                    if(value[0] == ' \xa0'):
+                    if(value == ' \xa0'):
                         return True
                     else:
                         return False

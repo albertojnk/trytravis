@@ -1,0 +1,20 @@
+FROM python:3.7.8-slim-buster
+
+WORKDIR /app
+
+COPY /backend .
+
+RUN apt-get update -y \
+    && apt-get install -y libgl1-mesa-dev \
+    && apt-get install -y libgtk2.0-dev \
+    && apt-get install -y libpq-dev git \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --upgrade pip
+
+RUN pip install -r requirements.txt
+
+EXPOSE 8000
+
+CMD [ "uvicorn", "--host=0.0.0.0", "--reload", "--workers=4", "scrapper_tjrs.app:app" ]
+
+#PRECISAMOS VER COMO VAI FICAR ISSO AQUI EM PRODUCAO.

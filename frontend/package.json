@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
+    "prod": "ng build --prod && angular-http-server --path ./dist/frontend",
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
     "build": "ng build",

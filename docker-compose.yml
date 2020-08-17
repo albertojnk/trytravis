@@ -2,8 +2,8 @@ version: '3'
 services:
   backend:
     build:
-        context: .
-        dockerfile: Dockerfile-backend
+        context: ./backend
+        dockerfile: Dockerfile.dev
     networks: 
         - base_network
     ports:
@@ -13,8 +13,8 @@ services:
 
   frontend:
     build:
-        context: .
-        dockerfile: Dockerfile-frontend
+        context: ./frontend
+        dockerfile: Dockerfile.dev
     networks: 
         - base_network
     ports:

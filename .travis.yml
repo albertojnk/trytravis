@@ -3,8 +3,8 @@ services:
     - docker
 
 before_install:
-    - docker build -t albertojnk/scrapper-front-test -f ./frontend/Dockerfile.dev ./frontend
-    - docker build -t albertojnk/scrapper-back-test -f ./backend/Dockerfile.dev ./backend
+    - docker build -t albertojnk/scrapper-front-test -f ./frontend/Dockerfile ./frontend
+    - docker build -t albertojnk/scrapper-back-test -f ./backend/Dockerfile ./backend
 
 script:
     - docker run -e CI=true albertojnk/scrapper-front-test npm test

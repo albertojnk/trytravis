@@ -2,7 +2,7 @@ FROM python:3.7.8-slim-buster
 
 WORKDIR /app
 
-COPY /backend .
+ADD /backend .
 
 RUN apt-get update -y \
     && apt-get install -y libgl1-mesa-dev \

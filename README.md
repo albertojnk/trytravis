@@ -2,7 +2,7 @@
 
 > Make your life way easier.
 
-[![Build Status](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger)
+[![Build Status](https://travis-ci.com/perinnistas/scrapper-tjrs.svg?token=AdsyLc5q6j2Zb1UCXx1L&branch=master)](https://travis-ci.com/perinnistas/scrapper-tjrs)
 
 
 ## Installation

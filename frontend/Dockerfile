@@ -2,7 +2,7 @@ FROM node:alpine
 
 WORKDIR /app
 RUN npm i -g @angular/cli \
-    && npm install angular-http-server -g
+    && npm install angular-http-server -g 
 
 COPY /package.json package.json
 RUN npm install --silent

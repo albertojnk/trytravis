@@ -1,4 +1,3 @@
-language: generic
 sudo: required
 services:
     - docker
@@ -8,7 +7,7 @@ before_install:
     - docker build -t albertojnk/scrapper-back-test -f ./backend/Dockerfile ./backend
 
 script:
-    - docker run -e CI=true albertojnk/scrapper-front-test npm test
+    - docker run -e CI=true albertojnk/scrapper-front-test ng build
 
 after_success:
     - docker build -t albertojnk/screapper-frontend ./frontend

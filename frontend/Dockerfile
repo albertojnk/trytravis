@@ -4,9 +4,9 @@ WORKDIR /app
 RUN npm i -g @angular/cli \
     && npm install angular-http-server -g
 
-ADD /frontend/package.json package.json
+COPY /package.json package.json
 RUN npm install --silent
-ADD /frontend .
+COPY . .
 RUN ng build --prod
 EXPOSE 8080
 
